@@ -91,13 +91,14 @@ $global:GitPromptSettings = New-Object PSObject -Property @{
 
     EnablePromptStatus                          = !$Global:GitMissing
     EnableFileStatus                            = $true
+    EnableFileStatusFromCache                   = $null
     RepositoriesInWhichToDisableFileStatus      = @( ) # Array of repository paths
     DescribeStyle                               = ''
 
     EnableWindowTitle                           = 'posh~git ~ '
 
-    PromptSuffix                                = '> '
-    PromptDebugSuffix                           = ' [DBG]>> '
+    PromptSuffix                                = '$(''>'' * ($nestedPromptLevel + 1)) '
+    PromptDebugSuffix                           = ' [DBG]$(''>'' * ($nestedPromptLevel + 1)) '
 
     Debug                                       = $false
 

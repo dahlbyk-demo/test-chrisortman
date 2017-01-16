@@ -26,7 +26,7 @@ Get-TempEnv 'SSH_AGENT_PID'
 Get-TempEnv 'SSH_AUTH_SOCK'
 
 # Get the default prompt definition.
-if ($psv.Major -eq 2) {
+if (($psv.Major -eq 2) -or ![Runspace]::DefaultRunspace.InitialSessionState.Commands) {
     $defaultPromptDef = "`$(if (test-path variable:/PSDebugContext) { '[DBG]: ' } else { '' }) + 'PS ' + `$(Get-Location) + `$(if (`$nestedpromptlevel -ge 1) { '>>' }) + '> '"
 }
 else {
@@ -37,9 +37,8 @@ else {
 $poshGitPromptScriptBlock = $null
 
 $currentPromptDef = if ($funcInfo = Get-Command prompt -ErrorAction SilentlyContinue) { $funcInfo.Definition }
-
-# HACK: If prompt is missing, create a global one we can overwrite with Set-Item
 if (!$currentPromptDef) {
+    # HACK: If prompt is missing, create a global one we can overwrite with Set-Item
     function global:prompt { ' ' }
 }
 
@@ -85,7 +84,7 @@ if (!$currentPromptDef -or ($currentPromptDef -eq $defaultPromptDef)) {
         }
 
         $global:LASTEXITCODE = $origLastExitCode
-        $promptSuffix
+        $ExecutionContext.SessionState.InvokeCommand.ExpandString($promptSuffix)
 '@)
 
     # Set the posh-git prompt as the default prompt
@@ -110,6 +109,7 @@ $exportModuleMemberParams = @{
     Alias = @('??') # TODO: Remove in 1.0.0
     Function = @(
         'Invoke-NullCoalescing',
+        'Add-PoshGitToProfile',
         'Write-GitStatus',
         'Write-Prompt',
         'Write-VcsStatus',
