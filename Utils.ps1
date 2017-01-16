@@ -59,7 +59,7 @@ function Invoke-Utf8ConsoleCommand([ScriptBlock]$cmd) {
 .OUTPUTS
     None.
 #>
-function Add-PoshGitToProfile([switch]$AllHosts, [switch]$Force) {
+function Add-PoshGitToProfile([switch]$AllHosts, [switch]$Force, [switch]$WhatIf) {
     $underTest = $false
 
     $profilePath = if ($AllHosts) { $PROFILE.CurrentUserAllHosts } else { $PROFILE.CurrentUserCurrentHost }
@@ -106,7 +106,7 @@ function Add-PoshGitToProfile([switch]$AllHosts, [switch]$Force) {
         $profileContent = "`nImport-Module '$ModuleBasePath\posh-git.psd1'"
     }
 
-    Add-Content -LiteralPath $profilePath -Value $profileContent -Encoding UTF8
+    Add-Content -LiteralPath $profilePath -Value $profileContent -Encoding UTF8 -WhatIf:$WhatIf
 }
 
 <#
