@@ -110,6 +110,7 @@ $exportModuleMemberParams = @{
     Function = @(
         'Invoke-NullCoalescing',
         'Add-PoshGitToProfile',
+        'Remove-PoshGitFromProfile',
         'Write-GitStatus',
         'Write-Prompt',
         'Write-VcsStatus',
