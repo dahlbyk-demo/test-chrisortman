@@ -267,7 +267,7 @@ function Test-PoshGitImportedInScript {
         return $false
     }
 
-    return (Get-Content $Path -ErrorAction SilentlyContinue) -match 'posh-git'
+    return [bool]((Get-Content $Path -ErrorAction SilentlyContinue) -match 'posh-git')
 }
 
 function dbg($Message, [Diagnostics.Stopwatch]$Stopwatch) {
